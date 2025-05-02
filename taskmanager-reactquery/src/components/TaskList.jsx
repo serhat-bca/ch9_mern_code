@@ -1,12 +1,12 @@
 import Task from "./Task";
+import { useTasksQuery } from "../hooks/useTasksQuery";
 
 const TaskList = () => {
-  const tasks = [
-    { id: "1", description: "Finish the report", urgent: true },
-    { id: "2", description: "Buy Groceries", urgent: false },
-    { id: "3", description: "Call John", urgent: false },
-    { id: "4", description: "Pay Internet Bill", urgent: true },
-  ];
+  
+  const {data: tasks, isLoading, isError} = useTasksQuery();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error Fetching Tasks!!!</p>;
 
   return (
     <div>
