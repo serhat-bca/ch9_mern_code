@@ -1,5 +1,5 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import { updateTask } from "../services/api";
+import { deleteTask, updateTask } from "../services/api";
 
 const Task = ({ task }) => {
   const queryClient = useQueryClient();
@@ -11,6 +11,13 @@ const Task = ({ task }) => {
       },
       onError: () => console.log("Error while toggling"),
     });
+
+    const deleteMutation = useMutation({
+      mutationFn: deleteTask,
+      onSuccess: () => {
+        queryClient.invalidateQueries(["tasks"]);
+      }
+    })
 
 
   return (
@@ -25,6 +32,7 @@ const Task = ({ task }) => {
       >
         {task.urgent ? "Make non-urgent" : "make urgent"}
       </span>
+      <button onClick={() => deleteMutation.mutate(task)}>Delete Task</button>
     </div>
   );
 };
